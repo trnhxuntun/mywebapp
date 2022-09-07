@@ -10,7 +10,39 @@
   <script type="text/javascript" src="/webjars/sockjs-client/sockjs.min.js"></script>
   <script type="text/javascript" src="/webjars/stomp-websocket/stomp.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script type="text/javascript" src="/app.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <script type="text/javascript" >
+    var stompClient = null;
+    $(document).ready(function() {
+      connect();
+      connect1();
+    });
+
+    function connect() {
+      var socket = new SockJS('/hello');
+      stompClient = Stomp.over(socket);
+      stompClient.connect({}, function() {
+        console.log('Web Socket is connected');
+        stompClient.subscribe('/topic/messages', function(message) {
+          $("#message").text(message.body);
+
+        });
+        stompClient.subscribe('/topic/update', function(message) {
+          $("#message").text(message.body);
+        });
+      });
+    }
+    $(function() {
+      $("button").on('click', function(e) {
+        e.initEvent();
+      });
+      $("#delete").click(function() {
+        stompClient.send("/app/update");
+      });
+    });
+  </script>
 </head>
 <body>
 <div align="center">
@@ -47,7 +79,7 @@
           <td>[[${user.lastName}]]</td>
           <td>
             <a th:href="@{'/users/edit/'+ ${user.id}}"  type="button" class="btn btn-primary">Edit</a>
-            <a th:href="@{'/users/delete/'+ ${user.id}}"  type="button" class="btn btn-danger">Delete</a>
+            <a id="delete" th:href="@{'/users/delete/'+ ${user.id}}"  type="button" class="btn btn-danger">Delete</a>
           </td>
         </tr>
       </th:block>
@@ -56,8 +88,10 @@
   </div>
 </div> <!-- form-group// -->
 <p style="color: red" th:text="${token}"></p>
-<label>Message from server: </label><span id="message"></span>
 
+  <span class="alert alert-success alert-dismissible container" id="message"></span>
+
+<span id="message1"></span>
 <p style="color: red" th:text="${decoded}"></p>
 <p style="color: red" th:text="${thongbao}"></p>
 </body>

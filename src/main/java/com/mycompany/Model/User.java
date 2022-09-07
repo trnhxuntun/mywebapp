@@ -32,7 +32,7 @@ public class User {
                 '}';
     }
 
-    @ManyToMany (cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToMany (cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "users_courses",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "courses_idc"))

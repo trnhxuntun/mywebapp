@@ -42,7 +42,7 @@ public class UserController {
         List<User> listuser=service.listall();
         model.addAttribute("listuser",listuser);
         if(session.getAttribute("USERNAME") != null)
-        return "index";
+        return "redirect:login";
         else
             return "redirect:login";
     }

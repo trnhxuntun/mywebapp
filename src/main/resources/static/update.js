@@ -8,7 +8,7 @@ function connect() {
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function() {
         console.log('Web Socket is connected');
-        stompClient.subscribe('/topic/messages', function(message) {
+        stompClient.subscribe('/topic/update', function(message) {
             $("#message").text(message.body);
         });
     });
@@ -19,6 +19,6 @@ $(function() {
         e.initEvent();
     });
     $("#send").click(function() {
-        stompClient.send("/app/hello", {}, $("#username").val());
+        stompClient.send("/app/update");
     });
 });
