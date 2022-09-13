@@ -36,8 +36,9 @@ public class Course {
     public void setNamec(String namec) {
         this.namec = namec;
     }
-    @ManyToMany(mappedBy = "courses")
-    private List<User> users;
+
+    @ManyToMany(mappedBy = "likedCourses")
+    public List<User> likes;
 
     @Override
     public String toString() {
@@ -45,5 +46,17 @@ public class Course {
                 "id=" + idc +
                 ", namec='" + namec + '\'' +
                 '}';
+    }
+
+    public List<User> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<User> likes) {
+        this.likes = likes;
+    }
+
+    public Course(List<User> likes) {
+        this.likes = likes;
     }
 }

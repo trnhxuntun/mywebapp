@@ -16,6 +16,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -24,18 +25,6 @@ import java.util.regex.Pattern;
 
 @Controller
 public class UserController {
-    /*@Autowired
-    private UserRepository urepo;
-    @Autowired
-    private CourseRepository crepo;
-    @PostMapping("/placeoder")
-    public User placeUser(@RequestBody Request rq){
-        return urepo.save(rq.getUser());
-    }
-    @GetMapping("/findall")
-    public List<User> findall(){
-        return (List<User>) urepo.findAll();
-    }*/
     @Autowired private UserService service;
     @GetMapping("/users")
     public String showuserlist(Model model,HttpSession session){
@@ -58,8 +47,8 @@ public class UserController {
     }
     @GetMapping("/users/new")
     public String Addnewuser(Model model){
-        model.addAttribute("user",new User());
-        return "form";
+            model.addAttribute("user", new User());
+            return "form";
     }
     @PostMapping("/users/save")
     public String saveuser(User user){
@@ -115,7 +104,7 @@ public class UserController {
                     .compact();
             Cookie cookie=new Cookie("username",token);
             respons.addCookie(cookie);
-                return "users";
+                return "redirect:users";
         } else {
             model.addAttribute("error", "Email or password not exitst");
 

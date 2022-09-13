@@ -7,12 +7,48 @@
         rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
         crossorigin="anonymous">
+  <script type="text/javascript" src="/webjars/sockjs-client/sockjs.min.js"></script>
+  <script type="text/javascript" src="/webjars/stomp-websocket/stomp.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script type="text/javascript">
+    var stompClient = null;
+    $(document).ready(function() {
+      connect();
+    });
+
+    function connect() {
+      var socket = new SockJS('/hello');
+      stompClient = Stomp.over(socket);
+      stompClient.connect({}, function() {
+        console.log('Web Socket is connected');
+        stompClient.subscribe('/topic/messages', function(message) {
+          alert(message.body)
+        });
+        stompClient.subscribe('/topic/delete', function(message) {
+          alert(message.body)
+        });
+        stompClient.subscribe('/topic/update',function (message){
+          $.notify(message.body, "info");
+        });
+      });
+    }
+    $(function() {
+      $("form").on('submit', function(e) {
+        e.initEvent();
+      });
+      $("#send").click(function() {
+        stompClient.send("/app/update");
+      });
+    });
+  </script>
 </head>
 <body>
 <div class="text-center">
   <h1>Edit User</h1>
 </div>
 <div class="container">
+  <a th:href="@{/users}" class="btn btn-sm btn-outline-secondary" type="button">Back User</a>
+  <br><br>
   <form th:action="@{/users/save}" method="POST" th:object="${user}">
     <input type="hidden" th:field="*{id}">
     <div class="border border-secondary p-4">
@@ -37,7 +73,7 @@
         <input type="checkbox" class="form-check-input" id="exampleCheck1" required checked>
         <label class="form-check-label" for="exampleCheck1">Check me out</label>
       </div>
-      <button type="submit" class="btn btn-primary">Submit Edit</button>
+      <button id="send" type="submit" class="btn btn-primary">Submit Edit</button>
     </div>
   </form>
 </div>

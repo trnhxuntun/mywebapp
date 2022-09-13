@@ -3,10 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Courses</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
 <div align="center">
@@ -17,26 +14,22 @@
     </p>
 </div>
 <div class="container">
+    <a th:href="@{/users}" class="btn btn-sm btn-outline-secondary" type="button">Back User</a>
+    <br><br>
     <table  class="table table-bordered" th:object="${user}">
         <thead class="thead-dark">
         <tr>
             <th>ID</th>
-            <th>E-mail</th>
             <th>First Name</th>
-            <th>Last Name</th>
-            <th>ID course</th>
             <th>Name course</th>
         </tr>
         </thead>
         <tbody>
         <th:block th:each="user : ${listuser}" >
-            <th:block th:each="course : ${user.courses}">
+            <th:block th:each="course : ${user.likedCourses}">
             <tr>
                 <td>[[${user.id}]]</td>
-                <td>[[${user.email}]]</td>
                 <td>[[${user.firstName}]]</td>
-                <td>[[${user.lastName}]]</td>
-                <td >[[${course.id}]]</td>
                 <td>[[${course.namec}]]</td>
             </tr>
             </th:block>

@@ -28,15 +28,16 @@ public class User {
                 ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", courses=" + courses +
+                ", courses=" + likedCourses +
                 '}';
     }
 
-    @ManyToMany (cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "users_courses",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "courses_idc"))
-            private List<Course> courses;
+    @ManyToMany
+    @JoinTable(
+            name = "course_like",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id"))
+    public List<Course> likedCourses;
     public Integer getId() {
         return id;
     }
@@ -77,11 +78,12 @@ public class User {
         this.lastName = lastName;
     }
 
-    public List<Course> getCourses() {
-        return courses;
+    public List<Course> getLikedCourses() {
+        return likedCourses;
     }
 
-    public void setCourses(List<Course> courses) {
-        this.courses = courses;
+    public void setLikedCourses(List<Course> likedCourses) {
+        this.likedCourses = likedCourses;
     }
+
 }

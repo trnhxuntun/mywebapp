@@ -24,6 +24,12 @@ public class MessageController {
     @SendTo("/topic/update")
     public String update() {
         System.out.println("thong bao da gui");
-        return "vừa có dữ liệu được thêm vào hệ thống!!!";
+        return "vừa có dữ liệu được thay đổi vào hệ thống!!!";
+    }
+    @MessageMapping("/delete")
+    @SendTo("/topic/delete")
+    public String delete(@Payload String username) {
+        System.out.println("thong bao xoa");
+        return username+" vừa bị xoá khỏi hệ thống!!!";
     }
 }

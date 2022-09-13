@@ -1,9 +1,6 @@
 var stompClient = null;
-$(document).ready(function() {
-    connect();
-});
+$(function() {
 
-function connect() {
     var socket = new SockJS('/hello');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function() {
@@ -12,8 +9,7 @@ function connect() {
             $("#message").text(message.body);
         });
     });
-}
-
+})
 $(function() {
     $("form").on('submit', function(e) {
         e.initEvent();
